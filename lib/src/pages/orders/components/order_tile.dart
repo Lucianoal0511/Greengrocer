@@ -38,8 +38,10 @@ class OrderTile extends StatelessWidget {
             ],
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,//Coloca o conteúdo iniciando da esquerda
           children: [
-            IntrinsicHeight(//Altura intrinseca, independente
+            IntrinsicHeight(
+              //Altura intrinseca, independente
               child: Row(
                 children: [
                   //Lista de Produtos
@@ -64,15 +66,47 @@ class OrderTile extends StatelessWidget {
                   ),
                   //Status do pedido
                   Expanded(
-                      flex: 2,
-                      child: OrderStatusWidget(
-                        status: order.status,
-                        isOverdue: order.overdueDateTime.isBefore(DateTime.now()),//Aqui vai fazer a verificação de validade do tempo
-                      ),
+                    flex: 2,
+                    child: OrderStatusWidget(
+                      status: order.status,
+                      isOverdue: order.overdueDateTime.isBefore(DateTime
+                          .now()), //Aqui vai fazer a verificação de validade do tempo
+                    ),
                   ),
                 ],
               ),
-            )
+            ),
+            // Total
+            Text.rich(
+              TextSpan(
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                children: [
+                  const TextSpan(
+                      text: 'Total ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                    text: utilsServices.priceToCurrency(order.total)
+                  )
+                ],
+              ),
+            ),
+            //Botão Pagamento
+            Visibility(
+              visible: order.status == 'pending_payment',
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: (){},
+                icon: Image.asset('assets/app_images/pix.png', height: 18,),
+                label: const Text('Ver QR Code Pix'),
+              ),
+              // replacement: outro widget,//Caso queira incrementar colocando um outro widget no lugar do botão
+            ),
           ],
         ),
       ),
@@ -103,8 +137,7 @@ class _OrderItemWidget extends StatelessWidget {
             ),
           ),
           Expanded(child: Text(orderItem.item.itemName)),
-          Text(utilsServices
-              .priceToCurrency(orderItem.totalPrice()))
+          Text(utilsServices.priceToCurrency(orderItem.totalPrice()))
         ],
       ),
     );
