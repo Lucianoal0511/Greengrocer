@@ -40,6 +40,7 @@ dependencies:
   mask_text_input_formatter: ^2.4.0 #Formatacao de textos
   badges: ^2.0.3 #icone que fica em cima do carrinho de compras
   intl: ^0.17.0 #Formatacao de precos
+  qr_flutter: ^4.0.0 #Criar QR Code
 
 dev_dependencies:
   flutter_test:

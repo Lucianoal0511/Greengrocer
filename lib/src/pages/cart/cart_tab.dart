@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/pages/cart/components/cart_tile.dart';
+import 'package:greengrocer/src/pages/common_widgets/payment_dialog.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 
 class CartTab extends StatefulWidget {
-
   const CartTab({Key? key}) : super(key: key);
 
   @override
@@ -16,15 +16,15 @@ class CartTab extends StatefulWidget {
 class _CartTabState extends State<CartTab> {
   final UtilsServices utilsServices = UtilsServices();
 
-  void removeItemFromCart(CartItemModel cartItem){
+  void removeItemFromCart(CartItemModel cartItem) {
     setState(() {
       app_data.cartItems.remove(cartItem);
     });
   }
 
-  double cartTotalPrice(){
+  double cartTotalPrice() {
     double total = 0;
-    for (var item in app_data.cartItems){
+    for (var item in app_data.cartItems) {
       total += item.totalPrice();
     }
     return total;
@@ -41,7 +41,7 @@ class _CartTabState extends State<CartTab> {
           Expanded(
             child: ListView.builder(
               itemCount: app_data.cartItems.length,
-              itemBuilder: (_, index){
+              itemBuilder: (_, index) {
                 return CartTile(
                   cartItem: app_data.cartItems[index],
                   remove: removeItemFromCart,
@@ -77,10 +77,9 @@ class _CartTabState extends State<CartTab> {
                 Text(
                   utilsServices.priceToCurrency(cartTotalPrice()),
                   style: TextStyle(
-                    fontSize: 23,
-                    color: CustomColors.customSwatchColor,
-                    fontWeight: FontWeight.bold
-                  ),
+                      fontSize: 23,
+                      color: CustomColors.customSwatchColor,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 50,
@@ -93,7 +92,16 @@ class _CartTabState extends State<CartTab> {
                     ),
                     onPressed: () async {
                       bool? result = await showOrderConfirmation();
-                      print(result);
+                      if (result ?? false) {
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return PaymentDialog(
+                              order: app_data.orders.first,
+                            );
+                          },
+                        );
+                      }
                     },
                     child: const Text(
                       'Concluir Pedido',
@@ -111,19 +119,18 @@ class _CartTabState extends State<CartTab> {
     );
   }
 
-  Future<bool?> showOrderConfirmation(){
+  Future<bool?> showOrderConfirmation() {
     return showDialog<bool>(
         context: context,
-        builder: (context){
+        builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20)
-            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: const Text('Confirmação'),
             content: const Text('Deseja realmente concluir o pedido?'),
             actions: [
               TextButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.of(context).pop(false);
                 },
                 child: const Text('Não'),
@@ -131,17 +138,15 @@ class _CartTabState extends State<CartTab> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
-                  ),
+                      borderRadius: BorderRadius.circular(20)),
                 ),
-                onPressed: (){
+                onPressed: () {
                   Navigator.of(context).pop(true);
                 },
                 child: const Text('Sim'),
               ),
             ],
           );
-        }
-    );
+        });
   }
 }
