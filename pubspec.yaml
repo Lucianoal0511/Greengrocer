@@ -41,6 +41,7 @@ dependencies:
   badges: ^2.0.3 #icone que fica em cima do carrinho de compras
   intl: ^0.17.0 #Formatacao de precos
   qr_flutter: ^4.0.0 #Criar QR Code
+  add_to_cart_animation: ^0.0.7 #animação de imagens para o carrinho
 
 dev_dependencies:
   flutter_test:
