@@ -7,6 +7,7 @@ import 'package:greengrocer/src/pages/home/components/category_tile.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/pages/home/components/item_tile.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
+import '../common_widgets/app_name_widget.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -35,23 +36,7 @@ class _HomeTabState extends State<HomeTab> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: GestureDetector(
-          onTap: (){
-            utilsServices.showToast(message: 'Bem-vindo a sua loja de mercearia :)');
-          },
-          child: Text.rich(TextSpan(
-              style: const TextStyle(
-                fontSize: 30,
-              ),
-              children: [
-                TextSpan(
-                    text: 'Green',
-                    style: TextStyle(color: CustomColors.customSwatchColor)),
-                TextSpan(
-                    text: 'grocer',
-                    style: TextStyle(color: CustomColors.customContrastColor)),
-              ])),
-        ),
+        title: AppNameWidget(utilsServices: utilsServices),
         actions: [
           Padding(
             padding: const EdgeInsets.only(
