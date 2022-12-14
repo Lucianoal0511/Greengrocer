@@ -44,6 +44,7 @@ dependencies:
   add_to_cart_animation: ^0.0.7 #animação de imagens para o carrinho
   fluttertoast: ^8.1.2 #adicionar o toast
   shimmer: ^2.0.0 #efeito de carregamento
+  get: ^4.6.5 #pacote para navegação entre páginas
 
 dev_dependencies:
   flutter_test:
