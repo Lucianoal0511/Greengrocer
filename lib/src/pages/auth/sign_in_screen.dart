@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_text_field.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
@@ -9,6 +10,10 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+
+  //Controlador de campos
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +92,7 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       //E-mail
                       CustomTextField(
+                        controller: emailController,
                         icon: Icons.email,
                         label: 'E-mail',
                         validator: (email) {
@@ -102,6 +108,7 @@ class SignInScreen extends StatelessWidget {
 
                       //Senha
                       CustomTextField(
+                        controller: passwordController,
                         icon: Icons.lock,
                         label: 'Senha',
                         isSecret: true,
@@ -121,28 +128,44 @@ class SignInScreen extends StatelessWidget {
                       //Botão de Entrar
                       SizedBox(
                         height: 50,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18))),
-                            onPressed: () {
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(builder: (c){
-                              //       return const BaseScreen();
-                              //     })
-                              // );
-                              if (_formKey.currentState!.validate()){
-                                print('Todos os campos estão válidos!');
-                              } else {
-                                print('Campos não válidos');
-                              }
-                              //Substituiu o Navigator
-                              // Get.offNamed(PagesRoutes.baseRoute);
-                            },
-                            child: const Text(
-                              'Entrar',
-                              style: TextStyle(fontSize: 18),
-                            )),
+                        child: GetX<AuthController>(
+                          builder: (authController) {
+                            return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18))),
+                                onPressed: authController.isLoading.value
+                                    ? null
+                                    : () {
+                                        FocusScope.of(context)
+                                            .unfocus(); //Faz o teclado desaparecer quando aperta o botão
+                                        // Navigator.of(context).pushReplacement(
+                                        //     MaterialPageRoute(builder: (c){
+                                        //       return const BaseScreen();
+                                        //     })
+                                        // );
+                                        if (_formKey.currentState!.validate()) {
+                                          String email = emailController.text;
+                                          String password =
+                                              passwordController.text;
+
+                                          authController.signIn(
+                                              email: email, password: password);
+                                        } else {
+                                          print('Campos não válidos');
+                                        }
+                                        //Substituiu o Navigator
+                                        // Get.offNamed(PagesRoutes.baseRoute);
+                                      },
+                                child: authController.isLoading.value
+                                    ? const CircularProgressIndicator()
+                                    : const Text(
+                                        'Entrar',
+                                        style: TextStyle(fontSize: 18),
+                                      ));
+                          },
+                        ),
                       ),
 
                       //Esqueceu a senha
