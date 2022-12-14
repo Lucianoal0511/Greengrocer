@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? initialValue;
   final bool readOnly;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     Key? key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters,
     this.initialValue,
     this.readOnly = false,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,6 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-
   bool isObscure = false;
 
   @override
@@ -43,16 +44,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
         initialValue: widget.initialValue,
         inputFormatters: widget.inputFormatters,
         obscureText: isObscure,
+        validator: widget.validator,
         decoration: InputDecoration(
             prefixIcon: Icon(widget.icon),
-            suffixIcon: widget.isSecret ? IconButton(
-                onPressed: (){
-                  setState(() {
-                    isObscure = !isObscure;
-                  });
-                },
-                icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off)
-            ) : null,
+            suffixIcon: widget.isSecret
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isObscure = !isObscure;
+                      });
+                    },
+                    icon: Icon(
+                        isObscure ? Icons.visibility : Icons.visibility_off))
+                : null,
             labelText: widget.label,
             isDense: true, //tornar mais denso o espaço dentro da caixa
             border: OutlineInputBorder(
