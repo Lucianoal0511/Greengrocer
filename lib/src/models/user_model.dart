@@ -4,7 +4,7 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
-  @JsonKey(name: 'fullname')
+  @JsonKey(name: 'fullname')//para ajustar o nome
   String? name;
   String? email;
   String? phone;
