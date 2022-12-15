@@ -47,6 +47,8 @@ dependencies:
   get: ^4.6.5 #pacote para navegação entre páginas
   dio: ^4.0.6 #cliente http para dart
   json_annotation: ^4.7.0 #anotacoes do json
+  freezed: ^2.3.2
+  freezed_annotation: ^2.2.0
 
 dev_dependencies:
   flutter_test:
