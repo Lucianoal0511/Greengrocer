@@ -49,6 +49,7 @@ dependencies:
   json_annotation: ^4.7.0 #anotacoes do json
   freezed: ^2.3.2
   freezed_annotation: ^2.2.0
+  flutter_secure_storage: ^7.0.1 #plugin de salvamento de dados localmente
 
 dev_dependencies:
   flutter_test:

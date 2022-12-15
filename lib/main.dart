@@ -4,6 +4,8 @@ import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();//Para inicializar o sistema
+
   Get.put(AuthController());//Foi injetado, logo pode ser acessado de qualquer lugar da aplicação
   runApp(const MyApp());
 }
