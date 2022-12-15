@@ -46,12 +46,15 @@ dependencies:
   shimmer: ^2.0.0 #efeito de carregamento
   get: ^4.6.5 #pacote para navegação entre páginas
   dio: ^4.0.6 #cliente http para dart
+  json_annotation: ^4.7.0 #anotacoes do json
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_launcher_icons: ^0.11.0 #adiciona imagem no icone do app
+  json_serializable: ^6.5.4 #gera codigos map
+  build_runner: ^2.3.2 #esse puglin é para construir o map
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
