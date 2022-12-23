@@ -17,7 +17,9 @@ class _ProfileTabState extends State<ProfileTab> {
         title: const Text('Perfil do Usuário'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+
+            },
             icon: const Icon(
               Icons.logout,
             ),
