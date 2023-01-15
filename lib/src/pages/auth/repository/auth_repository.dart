@@ -8,6 +8,15 @@ import 'package:greengrocer/src/services/http_manager.dart';
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
 
+  AuthResult handleUserOrError(Map<dynamic, dynamic> result){
+    if (result['result'] != null) {
+      final user = UserModel.fromJson(result['result']);
+      return AuthResult.sucess(user);
+    } else {
+      return AuthResult.error(authErrors.authErrorsString(result['error']));
+    }
+  }
+
   //Método de validação do token
   Future<AuthResult> validateToken(String token) async {
     final result = await _httpManager.restRequest(
@@ -18,12 +27,7 @@ class AuthRepository {
       },
     );
 
-    if (result['result'] != null) {
-      final user = UserModel.fromJson(result['result']);
-      return AuthResult.sucess(user);
-    } else {
-      return AuthResult.error(authErrors.authErrorsString(result['error']));
-    }
+    return handleUserOrError(result);
   }
 
   //Método de validação do email e senha
@@ -34,18 +38,30 @@ class AuthRepository {
         method: HttpMethods.post,
         body: {"email": email, "password": password});
 
-    if (result['result'] != null) {
-      // print('Signin funcionou!');
-      // print(result['result']);
+    // if (result['result'] != null) {
+    //   // print('Signin funcionou!');
+    //   // print(result['result']);
+    //
+    //   final user = UserModel.fromJson(result['result']);
+    //   return AuthResult.sucess(user);
+    //   // print(user);
+    //
+    // } else {
+    //   return AuthResult.error(authErrors.authErrorsString(result['error']));
+    //   // print('Signin não funcionou!');
+    //   // print(result['error']);
+    // }
+    return handleUserOrError(result);
+  }
 
-      final user = UserModel.fromJson(result['result']);
-      return AuthResult.sucess(user);
-      // print(user);
+  Future<AuthResult> signUp(UserModel user) async {
+    final result = await _httpManager.restRequest(
+      url: Endpoints.signup,
+      method: HttpMethods.post,
+      // TODO enviar dados
+      body: user.toJson(),
+    );
 
-    } else {
-      return AuthResult.error(authErrors.authErrorsString(result['error']));
-      // print('Signin não funcionou!');
-      // print(result['error']);
-    }
+    return handleUserOrError(result);
   }
 }
