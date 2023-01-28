@@ -5,16 +5,24 @@ import 'package:greengrocer/src/pages/home/repository/home_repository.dart';
 import 'package:greengrocer/src/pages/home/result/home_result.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
+const int itemsPerPage = 6;
+
 class HomeController extends GetxController {
   final homeRespository = HomeRepository();
   final utilServices = UtilsServices();
 
-  bool isLoading = false;
+  bool isCategoryLoading = false;
+  bool isProductLoading = true;
   List<CategoryModel> allCategories = [];
   CategoryModel? currentCategory;
+  List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
-  void setLoading(bool value) {
-    isLoading = value;
+  void setLoading(bool value, {bool isProduct = false}) {
+    if (!isProduct) {
+      isCategoryLoading = value;
+    } else {
+      isProductLoading = value;
+    }
     update();
   }
 
@@ -28,6 +36,9 @@ class HomeController extends GetxController {
   void selectCategory(CategoryModel category) {
     currentCategory = category;
     update();
+
+    //Para não ter que buscar todos dados mais de uma vez
+    // if (currentCategory!.items.isNotEmpty) return;
 
     getAllProducts();
   }
@@ -59,22 +70,21 @@ class HomeController extends GetxController {
   }
 
   Future<void> getAllProducts() async {
-    setLoading(true);
+    setLoading(true, isProduct: true);
 
     Map<String, dynamic> body = {
-      "page": 0,
-      "title": null,
-      "categoryId": "5mjkt5ERRo",
-      "itemsPerPage": 6
+      'page': currentCategory!.pagination,
+      'categoryId': currentCategory!.id,
+      "itemsPerPage": itemsPerPage,
     };
 
     HomeResult<ItemModel> result = await homeRespository.getAllProducts(body);
 
-    setLoading(false);
+    setLoading(false, isProduct: true);
 
     result.when(
       success: (data) {
-        print(data);
+        currentCategory!.items = data;
       },
       error: (message) {
         utilServices.showToast(
