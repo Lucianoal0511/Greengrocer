@@ -20,8 +20,6 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  String selectedCategory = 'Frutas';
-
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
 
   late Function(GlobalKey) runAddToCardAnimation;
@@ -30,18 +28,10 @@ class _HomeTabState extends State<HomeTab> {
     runAddToCardAnimation(gkImage);
   }
 
-  bool isLoading = true;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 
   final UtilsServices utilsServices = UtilsServices();
@@ -118,85 +108,94 @@ class _HomeTabState extends State<HomeTab> {
             ),
 
             //Categorias
-            Container(
-              padding: const EdgeInsets.only(left: 25),
-              height: 40,
-              child: !isLoading
-                  ? ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (_, index) {
-                        return CategoryTile(
-                          onPressed: () {
-                            setState(() {
-                              selectedCategory = app_data.categorias[index];
-                            });
+            GetBuilder<HomeController>(
+              builder: (controller) {
+                return Container(
+                  padding: const EdgeInsets.only(left: 25),
+                  height: 40,
+                  child: !controller.isLoading
+                      ? ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return CategoryTile(
+                              onPressed: () {
+                                controller.selectCategory(
+                                    controller.allCategories[index]);
+                              },
+                              category: controller.allCategories[index].title,
+                              isSelected: controller.allCategories[index] ==
+                                  controller.currentCategory,
+                            );
                           },
-                          category: app_data.categorias[index],
-                          isSelected:
-                              app_data.categorias[index] == selectedCategory,
-                        );
-                      },
-                      separatorBuilder: (_, index) => const SizedBox(
-                        width: 10,
-                      ),
-                      itemCount: app_data.categorias.length,
-                    )
-                  : ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: List.generate(
-                        10,
-                        (index) => Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.only(right: 12),
-                          child: CustomShimmer(
-                            height: 20,
-                            width: 80,
-                            borderRadius: BorderRadius.circular(20),
+                          separatorBuilder: (_, index) => const SizedBox(
+                            width: 10,
+                          ),
+                          itemCount: controller.allCategories.length,
+                        )
+                      : ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: List.generate(
+                            10,
+                            (index) => Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(right: 12),
+                              child: CustomShimmer(
+                                height: 20,
+                                width: 80,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                );
+              },
             ),
 
             //Grid
-            Expanded(
-              child: !isLoading
-                  ? GridView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      physics: const BouncingScrollPhysics(),
-                      //Outro tipo de animacao no grip
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 9 / 11.5, //Muda o aspecto das fotos
-                      ),
-                      itemCount: app_data.items.length,
-                      itemBuilder: (_, index) {
-                        return ItemTile(
-                            item: app_data.items[index],
-                            cartAnimationMethod: itemSelectedCartAnimations);
-                      },
-                    )
-                  : GridView.count(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      physics: const BouncingScrollPhysics(),
-                      //Outro tipo de animacao no grip
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 9 / 11.5, //Muda o aspecto das fotos
-                      children: List.generate(
-                        10,
-                        (index) => CustomShimmer(
-                          height: double.infinity,
-                          width: double.infinity,
-                          borderRadius: BorderRadius.circular(20),
+            GetBuilder<HomeController>(
+              builder: (controller) {
+                return Expanded(
+                  child: !controller.isLoading
+                      ? GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          physics: const BouncingScrollPhysics(),
+                          //Outro tipo de animacao no grip
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio:
+                                9 / 11.5, //Muda o aspecto das fotos
+                          ),
+                          itemCount: app_data.items.length,
+                          itemBuilder: (_, index) {
+                            return ItemTile(
+                                item: app_data.items[index],
+                                cartAnimationMethod:
+                                    itemSelectedCartAnimations);
+                          },
+                        )
+                      : GridView.count(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          physics: const BouncingScrollPhysics(),
+                          //Outro tipo de animacao no grip
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 9 / 11.5, //Muda o aspecto das fotos
+                          children: List.generate(
+                            10,
+                            (index) => CustomShimmer(
+                              height: double.infinity,
+                              width: double.infinity,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-            ),
+                );
+              },
+            )
           ],
         ),
       ),
