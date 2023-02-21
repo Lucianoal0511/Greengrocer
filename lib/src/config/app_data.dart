@@ -76,9 +76,9 @@ List<String> categorias = [
 ];
 
 List<CartItemModel> cartItems = [
-  CartItemModel(item: apple, quantity: 1,),
-  CartItemModel(item: mango, quantity: 1,),
-  CartItemModel(item: guava, quantity: 3,),
+  // CartItemModel(item: apple, quantity: 1,),
+  // CartItemModel(item: mango, quantity: 1,),
+  // CartItemModel(item: guava, quantity: 3,),
 ];
 
 UserModel user = UserModel(
@@ -96,14 +96,14 @@ List<OrderModel> orders = [
     createDateTime: DateTime.parse('2022-12-04 10:00:10.458'),
     overdueDateTime: DateTime.parse('2022-12-05 11:00:10.458'),
     items: [
-      CartItemModel(
-          item: apple,
-          quantity: 2
-      ),
-      CartItemModel(
-          item: mango,
-          quantity: 3
-      ),
+      // CartItemModel(
+      //     item: apple,
+      //     quantity: 2
+      // ),
+      // CartItemModel(
+      //     item: mango,
+      //     quantity: 3
+      // ),
     ],
     status: 'pending_payment',
     copyAndPaste: 'heujeufhjfdhj',
@@ -115,14 +115,14 @@ List<OrderModel> orders = [
     createDateTime: DateTime.parse('2022-12-04 14:00:10.458'),
     overdueDateTime: DateTime.parse('2022-12-05 15:00:10.458'),
     items: [
-      CartItemModel(
-          item: grape,
-          quantity: 2
-      ),
-      CartItemModel(
-          item: guava,
-          quantity: 3
-      ),
+      // CartItemModel(
+      //     item: grape,
+      //     quantity: 2
+      // ),
+      // CartItemModel(
+      //     item: guava,
+      //     quantity: 3
+      // ),
     ],
     status: 'delivered',
     copyAndPaste: 'heujeufhjfdhj',

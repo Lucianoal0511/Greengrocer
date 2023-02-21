@@ -17,18 +17,19 @@ class _CartTabState extends State<CartTab> {
   final UtilsServices utilsServices = UtilsServices();
 
   void removeItemFromCart(CartItemModel cartItem) {
-    setState(() {
-      app_data.cartItems.remove(cartItem);
-      utilsServices.showToast(message: '${cartItem.item.itemName} removido(a) do carrinho');
-    });
+    // setState(() {
+    //   app_data.cartItems.remove(cartItem);
+    //   utilsServices.showToast(message: '${cartItem.item.itemName} removido(a) do carrinho');
+    // });
   }
 
   double cartTotalPrice() {
-    double total = 0;
-    for (var item in app_data.cartItems) {
-      total += item.totalPrice();
-    }
-    return total;
+    // double total = 0;
+    // for (var item in app_data.cartItems) {
+    //   total += item.totalPrice();
+    // }
+    // return total;
+    return 0;
   }
 
   @override
@@ -41,12 +42,13 @@ class _CartTabState extends State<CartTab> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: app_data.cartItems.length,
+              itemCount: 0,
               itemBuilder: (_, index) {
-                return CartTile(
-                  cartItem: app_data.cartItems[index],
-                  remove: removeItemFromCart,
-                );
+                return Container();
+                // return CartTile(
+                //   cartItem: app_data.cartItems[index],
+                //   remove: removeItemFromCart,
+                // );
               },
             ),
           ),
