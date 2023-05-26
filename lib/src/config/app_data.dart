@@ -91,41 +91,41 @@ UserModel user = UserModel(
 
 List<OrderModel> orders = [
   //Pedido 1
-  OrderModel(
-    id: 'hfjdhdjdkjfhj',
-    createDateTime: DateTime.parse('2022-12-04 10:00:10.458'),
-    overdueDateTime: DateTime.parse('2022-12-05 11:00:10.458'),
-    items: [
-      // CartItemModel(
-      //     item: apple,
-      //     quantity: 2
-      // ),
-      // CartItemModel(
-      //     item: mango,
-      //     quantity: 3
-      // ),
-    ],
-    status: 'pending_payment',
-    copyAndPaste: 'heujeufhjfdhj',
-    total: 11.0,
-  ),
-  //Pedido 2
-  OrderModel(
-    id: 'hfjdhdjdkjfhj',
-    createDateTime: DateTime.parse('2022-12-04 14:00:10.458'),
-    overdueDateTime: DateTime.parse('2022-12-05 15:00:10.458'),
-    items: [
-      // CartItemModel(
-      //     item: grape,
-      //     quantity: 2
-      // ),
-      // CartItemModel(
-      //     item: guava,
-      //     quantity: 3
-      // ),
-    ],
-    status: 'delivered',
-    copyAndPaste: 'heujeufhjfdhj',
-    total: 15.0,
-  ),
+  // OrderModel(
+  //   id: 'hfjdhdjdkjfhj',
+  //   createDateTime: DateTime.parse('2022-12-04 10:00:10.458'),
+  //   overdueDateTime: DateTime.parse('2022-12-05 11:00:10.458'),
+  //   items: [
+  //     // CartItemModel(
+  //     //     item: apple,
+  //     //     quantity: 2
+  //     // ),
+  //     // CartItemModel(
+  //     //     item: mango,
+  //     //     quantity: 3
+  //     // ),
+  //   ],
+  //   status: 'pending_payment',
+  //   copyAndPaste: 'heujeufhjfdhj',
+  //   total: 11.0,
+  // ),
+  // //Pedido 2
+  // OrderModel(
+  //   id: 'hfjdhdjdkjfhj',
+  //   createDateTime: DateTime.parse('2022-12-04 14:00:10.458'),
+  //   overdueDateTime: DateTime.parse('2022-12-05 15:00:10.458'),
+  //   items: [
+  //     // CartItemModel(
+  //     //     item: grape,
+  //     //     quantity: 2
+  //     // ),
+  //     // CartItemModel(
+  //     //     item: guava,
+  //     //     quantity: 3
+  //     // ),
+  //   ],
+  //   status: 'delivered',
+  //   copyAndPaste: 'heujeufhjfdhj',
+  //   total: 15.0,
+  // ),
 ];
