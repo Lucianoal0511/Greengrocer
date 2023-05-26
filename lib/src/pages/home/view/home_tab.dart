@@ -4,6 +4,8 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_shimmer.dart';
 import 'package:greengrocer/src/pages/home/controller/home_controller.dart';
 import 'package:greengrocer/src/pages/home/view/components/category_tile.dart';
@@ -23,10 +25,10 @@ class _HomeTabState extends State<HomeTab> {
 
   final searchController =
       TextEditingController(); //Controlador do texto da pesquisa.
+  final navigationController =
+      Get.find<NavigationController>(); //habilidade de navegar entre as páginas
 
   late Function(GlobalKey) runAddToCardAnimation;
-
-  get controller => null;
 
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
@@ -56,23 +58,29 @@ class _HomeTabState extends State<HomeTab> {
               top: 15.0,
               right: 15.0,
             ),
-            child: GestureDetector(
-              onTap: () {},
-              child: badges.Badge(
-                badgeColor: CustomColors.customContrastColor,
-                badgeContent: Text(
-                  controller.getCartTotalItems().toString(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-                child: AddToCartIcon(
-                  key: globalKeyCartItems,
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: CustomColors.customSwatchColor,
+            child: GetBuilder<CartController>(builder: (controller) {
+              return GestureDetector(
+                onTap: () {
+                  navigationController.navigatePageView(NavigationTabs.cart);
+                },
+                child: badges.Badge(
+                  badgeColor: CustomColors.customContrastColor,
+                  badgeContent: Text(
+                    // controller.getCartTotalItems().toString(),
+                    controller.cartItems.length.toString(),
+                    //outra forma de mostrar
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  child: AddToCartIcon(
+                    key: globalKeyCartItems,
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: CustomColors.customSwatchColor,
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         ],
       ),
@@ -232,7 +240,8 @@ class _HomeTabState extends State<HomeTab> {
                           crossAxisCount: 2,
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10,
-                          childAspectRatio: 9 / 11.5, //Muda o aspecto das fotos
+                          childAspectRatio: 9 / 11.5,
+                          //Muda o aspecto das fotos
                           children: List.generate(
                             10,
                             (index) => CustomShimmer(

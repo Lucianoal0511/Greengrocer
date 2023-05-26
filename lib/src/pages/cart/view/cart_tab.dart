@@ -38,6 +38,19 @@ class _CartTabState extends State<CartTab> {
           Expanded(
             child: GetBuilder<CartController>(
               builder: (controller) {
+                if (controller.cartItems.isEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.remove_shopping_cart,
+                        size: 40,
+                        color: CustomColors.customSwatchColor,
+                      ),
+                      const Text('Não há itens no carrinho'),
+                    ],
+                  );
+                }
                 return ListView.builder(
                   itemCount: controller.cartItems.length,
                   itemBuilder: (_, index) {
@@ -74,17 +87,15 @@ class _CartTabState extends State<CartTab> {
                     fontSize: 12,
                   ),
                 ),
-                GetBuilder<CartController>(
-                  builder: (controller) {
-                    return Text(
-                      utilsServices.priceToCurrency(controller.cartTotalPrice()),
-                      style: TextStyle(
-                          fontSize: 23,
-                          color: CustomColors.customSwatchColor,
-                          fontWeight: FontWeight.bold),
-                    );
-                  }
-                ),
+                GetBuilder<CartController>(builder: (controller) {
+                  return Text(
+                    utilsServices.priceToCurrency(controller.cartTotalPrice()),
+                    style: TextStyle(
+                        fontSize: 23,
+                        color: CustomColors.customSwatchColor,
+                        fontWeight: FontWeight.bold),
+                  );
+                }),
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
@@ -106,7 +117,10 @@ class _CartTabState extends State<CartTab> {
                           },
                         );
                       } else {
-                        utilsServices.showToast(message: 'Pedido não confirmado :(', isError: true,);
+                        utilsServices.showToast(
+                          message: 'Pedido não confirmado :(',
+                          isError: true,
+                        );
                       }
                     },
                     child: const Text(
