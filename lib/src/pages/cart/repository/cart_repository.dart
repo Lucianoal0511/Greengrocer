@@ -1,3 +1,4 @@
+import 'package:greengrocer/src/config/app_data.dart';
 import 'package:greengrocer/src/constants/endpoints.dart';
 import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/pages/cart/cart_result/cart_result.dart';
@@ -33,6 +34,54 @@ class CartRepository {
       //Retornar uma mensagem
       return CartResult.error(
           'Ocorreu um erro ao recuperar os itens do carrinho');
+    }
+  }
+
+  Future<bool> changeItemQuantity({
+    required String cartItemId,
+    required int quantity,
+    required String token,
+  }) async {
+    final result = await _httpManager.restRequest(
+      url: Endpoints.changeItemQuantity,
+      method: HttpMethods.post,
+      body: {
+        'cartItemId': cartItemId,
+        'quantity': quantity,
+      },
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+    );
+
+    return result.isEmpty;
+  }
+
+  Future<CartResult<String>> addItemToCart({
+    required String userId,
+    required String token,
+    required String productId,
+    required int quantity,
+  }) async {
+    final result = await _httpManager.restRequest(
+      url: Endpoints.addItemToCart,
+      method: HttpMethods.post,
+      body: {
+        'user': userId,
+        'quantity': quantity,
+        'productId': productId,
+      },
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+    );
+
+    if (result['result'] != null) {
+      //adicionamos
+      return CartResult<String>.success(result['result']['id']);
+    } else {
+      //Erro
+      return CartResult.error('Não foi possível adicionar o item no carrinho');
     }
   }
 }

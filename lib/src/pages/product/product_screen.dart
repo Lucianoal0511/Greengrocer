@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/pages/common_widgets/quantity_widget.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class ProductScreen extends StatefulWidget {
-  
   final ItemModel item;
 
   const ProductScreen({Key? key, required this.item}) : super(key: key);
@@ -21,6 +21,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   int cartItemQuantity = 1;
 
+  final cartController = Get.find<CartController>();
   final navigationController = Get.find<NavigationController>();
 
   @override
@@ -36,7 +37,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: Hero(
                   tag: widget.item.imgUrl,
                   child: Image.network(widget.item.imgUrl),
-               ),
+                ),
               ),
               Expanded(
                 child: Container(
@@ -63,7 +64,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             child: Text(
                               widget.item.itemName,
                               maxLines: 2,
-                              overflow: TextOverflow.ellipsis,//Efeito de reticencias quando estoura o nome
+                              overflow: TextOverflow.ellipsis,
+                              //Efeito de reticencias quando estoura o nome
                               style: const TextStyle(
                                 fontSize: 27,
                                 fontWeight: FontWeight.bold,
@@ -73,7 +75,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           QuantityWidget(
                             suffixText: widget.item.unit,
                             value: cartItemQuantity,
-                            result: (quantity){
+                            result: (quantity) {
                               setState(() {
                                 cartItemQuantity = quantity;
                               });
@@ -116,12 +118,18 @@ class _ProductScreenState extends State<ProductScreen> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                          onPressed: (){
+                          onPressed: () {
                             //Fechar a tela
                             Get.back();
 
+                            cartController.addItemToCart(
+                              item: widget.item,
+                              quantity: cartItemQuantity,
+                            );
+
                             //Carrinho
-                            navigationController.navigatePageView(NavigationTabs.cart);
+                            navigationController
+                                .navigatePageView(NavigationTabs.cart);
                           },
                           label: const Text(
                             'Add no Carrinho',
@@ -136,7 +144,6 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -150,7 +157,7 @@ class _ProductScreenState extends State<ProductScreen> {
             left: 10,
             child: SafeArea(
               child: IconButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.of(context).pop();
                 },
                 icon: Icon(
@@ -162,7 +169,6 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-
     );
   }
 }

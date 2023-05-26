@@ -40,7 +40,7 @@ dependencies:
   mask_text_input_formatter: ^2.4.0 #Formatacao de textos
   badges: ^2.0.3 #icone que fica em cima do carrinho de compras
   intl: ^0.17.0 #Formatacao de precos
-  qr_flutter: ^4.0.0 #Criar QR Code
+  qr_flutter: ^4.1.0 #Criar QR Code
   add_to_cart_animation: ^0.0.7 #animação de imagens para o carrinho
   fluttertoast: ^8.1.2 #adicionar o toast
   shimmer: ^2.0.0 #efeito de carregamento
