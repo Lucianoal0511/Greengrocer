@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/product/product_screen.dart';
+import 'package:greengrocer/src/pages_routes/app_pages.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class ItemTile extends StatefulWidget {
   final ItemModel item;
   final void Function(GlobalKey) cartAnimationMethod;
 
-  const ItemTile({Key? key, required this.item, required this.cartAnimationMethod})
+  const ItemTile(
+      {Key? key, required this.item, required this.cartAnimationMethod})
       : super(key: key);
 
   @override
@@ -21,12 +24,16 @@ class _ItemTileState extends State<ItemTile> {
   final UtilsServices utilsServices = UtilsServices();
 
   IconData tileIcon = Icons.add_shopping_cart_outlined;
+
   Future<void> switchIcon() async {
-    setState(() {//Muda de ícone
+    setState(() {
+      //Muda de ícone
       tileIcon = Icons.check;
     });
-    await Future.delayed(const Duration(milliseconds: 1500));//Aqui é o Delay para retornar a imagem anterior
-    setState(() {//retorno do ícone
+    await Future.delayed(const Duration(
+        milliseconds: 1500)); //Aqui é o Delay para retornar a imagem anterior
+    setState(() {
+      //retorno do ícone
       tileIcon = Icons.add_shopping_cart_outlined;
     });
   }
@@ -38,11 +45,7 @@ class _ItemTileState extends State<ItemTile> {
         //Conteúdo
         GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (c) {
-              return ProductScreen(
-                item: widget.item,
-              );
-            }));
+            Get.toNamed(PagesRoutes.productRoute, arguments: widget.item);
           },
           child: Card(
             elevation: 1,
