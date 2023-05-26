@@ -26,6 +26,8 @@ class _HomeTabState extends State<HomeTab> {
 
   late Function(GlobalKey) runAddToCardAnimation;
 
+  get controller => null;
+
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
   }
@@ -58,9 +60,9 @@ class _HomeTabState extends State<HomeTab> {
               onTap: () {},
               child: badges.Badge(
                 badgeColor: CustomColors.customContrastColor,
-                badgeContent: const Text(
-                  '2',
-                  style: TextStyle(color: Colors.white),
+                badgeContent: Text(
+                  controller.getCartTotalItems().toString(),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 child: AddToCartIcon(
                   key: globalKeyCartItems,

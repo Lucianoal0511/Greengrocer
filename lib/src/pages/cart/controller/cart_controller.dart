@@ -39,6 +39,21 @@ class CartController extends GetxController {
       token: authController.user.token!,
     );
 
+    if (result) {
+      if (quantity == 0) {
+        cartItems.removeWhere((cartItem) => cartItem.id == item.id);
+      } else {
+        cartItems.firstWhere((cartItem) => cartItem.id == item.id).quantity =
+            quantity;
+      }
+      update();
+    } else {
+      utilsServices.showToast(
+        message: 'Ocorreu um erro ao alterar a quantidade do produto',
+        isError: true,
+      );
+    }
+
     return result;
   }
 
@@ -64,6 +79,13 @@ class CartController extends GetxController {
     );
   }
 
+  //Método para mostrar a quantidade de itens de forma unitária
+  int getCartTotalItems() {
+    return cartItems.isEmpty
+        ? 0
+        : cartItems.map((e) => e.quantity).reduce((a, b) => a + b);
+  }
+
   //Verifica se o item colocado no carrinho é o da lista
   int getItemIndex(ItemModel item) {
     return cartItems.indexWhere((itemInList) => itemInList.item.id == item.id);
@@ -75,19 +97,10 @@ class CartController extends GetxController {
 
     if (itemIndex >= 0) {
       final product = cartItems[itemIndex];
-      final result = await changeItemQuantity(
+      await changeItemQuantity(
         item: product,
         quantity: (product.quantity + quantity),
       );
-      if (result) {
-        //Se existir
-        cartItems[itemIndex].quantity += quantity;
-      } else {
-        utilsServices.showToast(
-          message: 'Ocorreu um erro ao alterar a quantidade do produto',
-          isError: true,
-        );
-      }
     } else {
       final CartResult<String> result = await cartRepository.addItemToCart(
         userId: authController.user.id!,
