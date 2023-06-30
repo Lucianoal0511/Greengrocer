@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:greengrocer/src/config/app_data.dart';
 import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/models/order_model.dart';
@@ -18,6 +17,8 @@ class CartController extends GetxController {
 
   List<CartItemModel> cartItems = [];
 
+  bool isCheckoutLoading = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -33,14 +34,28 @@ class CartController extends GetxController {
     return total;
   }
 
+  void setCheckoutLoading(bool value) {
+    isCheckoutLoading = value;
+    update();
+  }
+
   Future checkoutCart() async {
+
+    setCheckoutLoading(true);
+
     CartResult<OrderModel> result = await cartRepository.checkoutCart(
       token: authController.user.token!,
       total: cartTotalPrice(),
     );
 
+    setCheckoutLoading(false);
+
     result.when(
       success: (order) {
+
+        cartItems.clear(); //Limpa o conteúdo no carrinho
+        update(); //Atualiza
+
         showDialog(
           context: Get.context!,
           builder: (_) {
@@ -52,7 +67,7 @@ class CartController extends GetxController {
       },
       error: (message) {
         utilsServices.showToast(
-          message: 'Pedido não confirmado :(',
+          message: message,
         );
       },
     );

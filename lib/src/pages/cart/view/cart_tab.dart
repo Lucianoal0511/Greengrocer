@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
-import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
-import 'package:greengrocer/src/pages/common_widgets/payment_dialog.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
-import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'components/cart_tile.dart';
 
 class CartTab extends StatefulWidget {
@@ -99,26 +96,37 @@ class _CartTabState extends State<CartTab> {
                 }),
                 SizedBox(
                   height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.customSwatchColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+                  child: GetBuilder<CartController>(builder: (controller) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.customSwatchColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
                       ),
-                    ),
-                    onPressed: () async {
-                      bool? result = await showOrderConfirmation();
-                      if (result ?? false) {
-                        cartController.checkoutCart(); //referenciando o método
-                      }
-                    },
-                    child: const Text(
-                      'Concluir Pedido',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
+                      onPressed: controller.isCheckoutLoading
+                          ? null
+                          : () async {
+                              bool? result = await showOrderConfirmation();
+                              if (result ?? false) {
+                                cartController
+                                    .checkoutCart(); //referenciando o método
+                              } else {
+                                utilsServices.showToast(
+                                  message: 'Pedido não confirmado :(',
+                                );
+                              }
+                            },
+                      child: controller.isCheckoutLoading
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              'Concluir Pedido',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                    );
+                  }),
                 ),
               ],
             ),
