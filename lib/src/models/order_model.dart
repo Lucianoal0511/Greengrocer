@@ -22,6 +22,8 @@ class OrderModel {
   String copyAndPaste;
   double total;
 
+  bool get isOverDue => overdueDateTime.isBefore(DateTime.now()); // verifica se está vencido
+
   OrderModel({
     required this.id,
     this.createDateTime,
