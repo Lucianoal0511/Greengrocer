@@ -12,19 +12,24 @@ class OrdersTab extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pedidos'),
       ),
-      body: GetBuilder<AllOrdersController>(
-        builder: (controller) {
-          return ListView.separated(
-              padding: const EdgeInsets.all(16),
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (_, index){
-                return OrderTile(order: controller.allOrders[index]);
-              },
-              separatorBuilder: (_, index) => const SizedBox(height: 10,),//Foi colocado uma altura no separador
-              itemCount: controller.allOrders.length,
-          );
-        }
-      ),
+      body: GetBuilder<AllOrdersController>(builder: (controller) {
+        return RefreshIndicator(
+          onRefresh: () => controller.getAllOrders(),
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            physics: const AlwaysScrollableScrollPhysics(),
+            //Para sempre ter o comportamento de rolagem
+            itemBuilder: (_, index) {
+              return OrderTile(order: controller.allOrders[index]);
+            },
+            separatorBuilder: (_, index) => const SizedBox(
+              height: 10,
+            ),
+            //Foi colocado uma altura no separador
+            itemCount: controller.allOrders.length,
+          ),
+        );
+      }),
     );
   }
 }
