@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
@@ -7,7 +8,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();//Para inicializar o sistema
 
   Get.put(AuthController());//Foi injetado, logo pode ser acessado de qualquer lugar da aplicação
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([//mantém a orientação do app em pé
+    DeviceOrientation.portraitUp,
+  ]).then((_){
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
